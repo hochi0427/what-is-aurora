@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { loadStoredQuestions, saveQuestions } from '@/utils/questions'
 
 const buildPublicAssetUrl = (fileName) => {
   const normalizedBase = import.meta.env.BASE_URL?.replace(/\/$/, '') ?? ''
@@ -18,6 +19,8 @@ const auroraImages = [
   buildPublicAssetUrl('aurora2.jpg'),
   buildPublicAssetUrl('aurora3.jpg'),
 ]
+
+const questionItems = ref(loadStoredQuestions())
 
 const sections = [
   // {
@@ -48,11 +51,11 @@ const sections = [
     id: 'Questions-section',
     title: 'Questions',
     type: 'question',
-    items: [
-      'Do other planets get auroras?',
-    ],
+    items: questionItems.value,
   },
 ]
+
+const QUESTION_SECTION_ID = 'Questions-section'
 
 // 每一個區塊的開關（預設全部關起來）
 const openStates = ref(sections.map(() => false))
@@ -65,11 +68,21 @@ const questionInput = ref('')
 
 // ⭐ 把 input 的內容加進 Questions 的 items 裡
 const addQuestion = (sectionIndex) => {
+  if (sections[sectionIndex]?.id !== QUESTION_SECTION_ID) return
   const text = questionInput.value.trim()
   if (!text) return
-  sections[sectionIndex].items.push(text)
+  questionItems.value.push(text)
   questionInput.value = ''
 }
+
+const removeQuestion = (itemIndex) => {
+  if (itemIndex < 0 || itemIndex >= questionItems.value.length) return
+  questionItems.value.splice(itemIndex, 1)
+}
+
+watch(questionItems, () => {
+  saveQuestions(questionItems.value)
+}, { deep: true })
 </script>
 
 
@@ -118,7 +131,15 @@ const addQuestion = (sectionIndex) => {
                 :key="i"
                 class="question-item"
               >
-                {{ item }}
+                <span class="question-text">{{ item }}</span>
+                <button
+                  class="delete-question-btn"
+                  type="button"
+                  :aria-label="`Remove question ${i + 1}`"
+                  @click="removeQuestion(i)"
+                >
+                  ✕
+                </button>
               </li>
             </ul>
 
@@ -282,6 +303,30 @@ h2 {
   font-size: 18px;
   margin-bottom: 6px;
   line-height: 1.6;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.question-text {
+  flex: 1;
+}
+
+.delete-question-btn {
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  transition: background 0.2s ease;
+}
+
+.delete-question-btn:hover {
+  background: rgba(255, 255, 255, 0.35);
 }
 
 .question-input-box {
