@@ -38,6 +38,8 @@ import { RouterLink, RouterView } from 'vue-router'
 <style>
 .app {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background: #ADB9D3;
   color: #f4f4ff;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
@@ -95,15 +97,18 @@ import { RouterLink, RouterView } from 'vue-router'
 
 /* 內容區 */
 .main {
+  flex: 1;
   width: 100%;
-  min-height: calc(100vh - 64px); /* 讓內容至少跟螢幕一樣高，可調整 */
   padding: 24px 32px 40px;
   box-sizing: border-box;
   background: #ADB9D3;
+  display: flex;
+  align-items: flex-start; /* 讓內容高度由自身決定 */
 }
 .section {
   max-width: 960px;          /* 中間內容的寬度上限 */
   margin: 0 auto;            /* 置中 */
+  width: 100%;
   padding: 24px 32px 40px;   /* 內距，讓字不要貼邊 */
   box-sizing: border-box;
   background: rgba(12, 18, 40, 0.15); /* 想要更乾淨可以改成 transparent */

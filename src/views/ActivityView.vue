@@ -228,6 +228,7 @@ li:hover {
   gap: 8px;
   margin-left: 25px;
   margin-top: 4px;
+  margin-bottom: 25px;
 }
 
 .question-input {
