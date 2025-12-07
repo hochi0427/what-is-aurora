@@ -1,24 +1,47 @@
 <script setup>
 import { ref } from 'vue'
 
+const buildPublicAssetUrl = (fileName) => {
+  const normalizedBase = import.meta.env.BASE_URL?.replace(/\/$/, '') ?? ''
+  const normalizedFile = fileName.replace(/^\//, '')
+  return `${normalizedBase}/${normalizedFile}`
+}
+
+const vocabularyImages = {
+  coronalMassEjection: buildPublicAssetUrl('vocabulary1.jpg'),
+  solarWind: buildPublicAssetUrl('vocabulary2.gif'),
+  magneticField: buildPublicAssetUrl('Vocabulary3.gif'),
+}
+
+const auroraImages = [
+  buildPublicAssetUrl('aurora1.jpg'),
+  buildPublicAssetUrl('aurora2.jpg'),
+  buildPublicAssetUrl('aurora3.jpg'),
+]
+
 const sections = [
+  // {
+  //   id: 'learning-goal',
+  //   title: 'Learning Goal',
+  //   type: 'plain',
+  //   items: ['What is an Aurora?', 'What makes Aurora happen?'],
+  // },
   {
-    id: 'learning-goal',
-    title: 'Learning Goal',
-    type: 'plain',
-    items: ['What is an Aurora?', 'What makes Aurora happen?'],
+    id: 'aurora',
+    title: 'Aurora',
+    type: 'aurora',
+    description:
+      'Auroras happen when tiny particles from the Sun follow Earth’s magnetic field and bump into gases in the sky. \nThese bumps make the sky glow with beautiful colors.',
+    images: auroraImages,
   },
   {
     id: 'key-vocabulary',
     title: 'Key Vocabulary',
     type: 'vocab-with-img',
     items: [
-    {img: 'public/vocabulary1.jpg',
-    word: 'Coronal Mass Ejection'},
-    {img: 'public/vocabulary2.gif',
-    word: 'Solar Wind'},
-    {img: 'public/vocabulary3.gif',
-    word: 'Earth Magnetic Field'},
+      { img: vocabularyImages.coronalMassEjection, word: 'Coronal Mass Ejection' },
+      { img: vocabularyImages.solarWind, word: 'Solar Wind' },
+      { img: vocabularyImages.magneticField, word: 'Magnetic Field' },
     ],
   },
   {
@@ -71,7 +94,7 @@ const addQuestion = (sectionIndex) => {
         <span class="accordion-title">{{ section.title }}</span>
         </button>
 
-                <!-- 內容區：依照 type 切換 -->
+        <!-- 內容區：依照 type 切換 -->
         <div v-show="openStates[index]" class="panel">
           <!-- 1. vocab-with-img：圖片 + 文字卡片 -->
           <template v-if="section.type === 'vocab-with-img'">
@@ -113,7 +136,23 @@ const addQuestion = (sectionIndex) => {
             </div>
           </template>
 
-          <!-- 3. 其他：當作 plain list （Learning Goal）-->
+          <!-- 3. aurora：圖片排成一列 + 簡介 -->
+          <template v-else-if="section.type === 'aurora'">
+            <p class="aurora-description">
+              {{ section.description }}
+            </p>
+            <div class="aurora-image-row">
+              <img
+                v-for="(img, i) in section.images"
+                :key="i"
+                :src="img"
+                :alt="`Aurora photo ${i + 1}`"
+                class="aurora-img"
+              />
+            </div>
+          </template>
+
+          <!-- 4. 其他：當作 plain list （Learning Goal）-->
           <template v-else>
             <ul class="plain-list">
               <li
@@ -273,6 +312,35 @@ h2 {
 
 .add-btn:hover {
   background: #545fb5;
+}
+
+.aurora-description {
+  margin: 8px 0 12px;
+  font-size: 18px;
+  line-height: 1.7;
+  white-space: pre-line;
+  margin-left: 18px;
+  margin-right: 18px;
+}
+
+.aurora-description:hover {
+  font-size: 22px;
+}
+
+.aurora-image-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
+.aurora-img {
+  width: 100%;
+  max-width: 280px;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
 }
 
 </style>

@@ -1,7 +1,7 @@
 <script setup>
 // 現在先用 YouTube 的示意連結，你之後可以改成自己的動畫影片 URL
 // 例如: 'https://www.youtube.com/embed/你的影片ID'
-const videoUrl = 'https://www.youtube.com/embed/PgIKsuZ3RZU?si=OzXEkzrp6ioNLefm'
+const videoUrl = 'https://www.youtube.com/embed/Bu5kn5Wi8kA?si=VfXbe25QvS6UfoiX'
 </script>
 <template>
   <section class="aurora-page">
@@ -36,30 +36,8 @@ const videoUrl = 'https://www.youtube.com/embed/PgIKsuZ3RZU?si=OzXEkzrp6ioNLefm'
           </video>
           -->
         </div>
-
-        <div class="video-caption">
-          <h3>Key Points</h3>
-          <ul>
-            <li>
-              While the video plays, pause at key moments to highlight
-              <strong>solar wind</strong>, <strong>magnetic field</strong>,
-              and <strong>atmosphere</strong>.
-            </li>
-          </ul>
-        </div>
       </div>
     </div>
-
-    <!-- 先預留一個 Part 2 的標題，之後再一起做卡片互動 -->
-    <section class="coming-soon">
-      <p class="part-label">Part 2 · Key Steps</p>
-      <p class="hint-text">
-        之後我們會在這裡放四個可點擊放大的卡片：
-        <br />
-        Solar wind originates from the sun · Earth’s magnetic field forms a protective layer ·
-        Particles are guided to the poles · Collisions produce different colors of light.
-      </p>
-    </section>
   </section>
 </template>
 
